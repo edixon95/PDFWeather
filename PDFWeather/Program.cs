@@ -34,7 +34,6 @@ public static class Program
         using (PdfDocument document = PdfDocument.Open(@"C:\Users\dixon\Desktop\Devproj\PDFWeather\test\sample.pdf"))
         {
 
-            //SortedDictionary<double, int> countFont = new SortedDictionary<double, int>();
             Dictionary<string, int> dateMonths = new Dictionary<string, int>
             {
                 { "January", 31 },
@@ -101,26 +100,26 @@ public static class Program
                 }
                 // Data comes in sets of 7, always in the same format
                 int chooseMonth = 0;
-                //string monthName = (string)dataHeadings[chooseMonth];
-                //int monthValue = dateMonths[monthName];
+                string monthName = dataHeadings[chooseMonth].ToString();
+                int amountOfDays = dateMonths[monthName];
 
-                
+
 
                 for (int k = 0; k < entireDoc.Count; k += 8)
                 {
-                    string monthName = (string)dataHeadings[chooseMonth];
-                    int monthValue = dateMonths[monthName];
+
                     if (chooseMonth == 0)
                     {
-                        if (monthOne.Count == monthValue)
+                        if (monthOne.Count == amountOfDays)
                         {
+                            Console.WriteLine($"Month: {monthName}, days: {amountOfDays}");
+
                             chooseMonth++;
-                            Console.WriteLine("Month full");
-                            Console.WriteLine($"Month {monthName} contains {dateMonths[monthName]}");
+                            monthName = dataHeadings[chooseMonth].ToString();
+                            amountOfDays = dateMonths[monthName];
                         }
                         else
                         {
-                            Console.WriteLine($"Item Added to: {monthName}, contains {monthValue} days");
                             monthOne.Add(new DataItem()
                             {
                                 Date = entireDoc[k].ToString(),
@@ -139,14 +138,15 @@ public static class Program
 
                     if (chooseMonth == 1)
                     {
-                        if (monthTwo.Count == monthValue)
+                        if (monthTwo.Count == amountOfDays)
                         {
+                            Console.WriteLine($"Month: {monthName}, days: {amountOfDays}");
                             chooseMonth++;
+                            monthName = dataHeadings[chooseMonth].ToString();
+                            amountOfDays = dateMonths[monthName];
                         }
                         else
                         {
-                            Console.WriteLine($"Item Added to: {monthName}, contains {monthValue} days");
-
                             monthTwo.Add(new DataItem()
                             {
                                 Date = entireDoc[k].ToString(),
@@ -157,21 +157,22 @@ public static class Program
                                 Cdd = entireDoc[k + 5].ToString(),
                                 Prcp = entireDoc[k + 6].ToString(),
                                 Month = dataHeadings[chooseMonth].ToString()
-                                // Ignore 7th item, can be added later or tagged on the end of Prcp
                             });
                         }
                     }
 
                     if (chooseMonth == 2)
                     {
-                        if (monthThree.Count == monthValue)
+                        if (monthThree.Count == amountOfDays)
                         {
+                            Console.WriteLine($"Month: {monthName}, days: {amountOfDays}");
+
                             chooseMonth++;
+                            monthName = dataHeadings[chooseMonth].ToString();
+                            amountOfDays = dateMonths[monthName];
                         }
                         else
                         {
-                            Console.WriteLine($"Item Added to: {monthName}, contains {monthValue} days");
-
                             monthThree.Add(new DataItem()
                             {
                                 Date = entireDoc[k].ToString(),
@@ -182,7 +183,6 @@ public static class Program
                                 Cdd = entireDoc[k + 5].ToString(),
                                 Prcp = entireDoc[k + 6].ToString(),
                                 Month = dataHeadings[chooseMonth].ToString()
-                                // Ignore 7th item, can be added later or tagged on the end of Prcp
                             });
                         }
                     }
@@ -194,7 +194,7 @@ public static class Program
                         chooseMonth = 0;
                     }
                 }
-                // TODO: Arrange data in correct order, currently runs across entire rows
+
                 foreach (DataItem item in monthOne)
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
