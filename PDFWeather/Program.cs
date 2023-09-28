@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Security.Cryptography.X509Certificates;
+using System.IO;
 using UglyToad.PdfPig;
 using UglyToad.PdfPig.Content;
 
@@ -31,7 +29,11 @@ public static class Program
 {
     public static void Main()
     {
-        using (PdfDocument document = PdfDocument.Open(@"C:\Users\dixon\Desktop\Devproj\PDFWeather\test\sample.pdf"))
+        // Get relative file path, still only accepts sample
+        string baseDirect = AppDomain.CurrentDomain.BaseDirectory;
+        string getFile = Path.Combine(baseDirect, @"..\..\..\test\sample.pdf");
+        string filePath = Path.GetFullPath(getFile);
+        using (PdfDocument document = PdfDocument.Open(filePath))
         {
 
             Dictionary<string, int> dateMonths = new Dictionary<string, int>
@@ -81,7 +83,6 @@ public static class Program
                         if (word.Letters[0].Width < 5)
                         {
                             entireDoc.Add(word);
-                            Console.WriteLine(word);
                         }
                         else
                         {
@@ -112,8 +113,6 @@ public static class Program
                     {
                         if (monthOne.Count == amountOfDays)
                         {
-                            Console.WriteLine($"Month: {monthName}, days: {amountOfDays}");
-
                             chooseMonth++;
                             monthName = dataHeadings[chooseMonth].ToString();
                             amountOfDays = dateMonths[monthName];
@@ -140,7 +139,6 @@ public static class Program
                     {
                         if (monthTwo.Count == amountOfDays)
                         {
-                            Console.WriteLine($"Month: {monthName}, days: {amountOfDays}");
                             chooseMonth++;
                             monthName = dataHeadings[chooseMonth].ToString();
                             amountOfDays = dateMonths[monthName];
@@ -165,8 +163,6 @@ public static class Program
                     {
                         if (monthThree.Count == amountOfDays)
                         {
-                            Console.WriteLine($"Month: {monthName}, days: {amountOfDays}");
-
                             chooseMonth++;
                             monthName = dataHeadings[chooseMonth].ToString();
                             amountOfDays = dateMonths[monthName];
@@ -216,5 +212,6 @@ public static class Program
             Console.ForegroundColor = ConsoleColor.White;
         }
         Console.ReadKey();
+        // TODO: WRITE TO SQL ALREADY
     }
 }
